@@ -8,7 +8,7 @@ from io import StringIO
 import base64
 
 
-def compute_fds(df, metanome_jar_path="metanome-cli-1.2-SNAPSHOT.jar"):
+def compute_fds(df: pd.DataFrame, metanome_jar_path: str = "metanome-cli-1.2-SNAPSHOT.jar"):
     temp_csv_file = "temp_input.csv"
     df.to_csv(temp_csv_file, index=False)
 
@@ -38,11 +38,11 @@ def compute_fds(df, metanome_jar_path="metanome-cli-1.2-SNAPSHOT.jar"):
     return fds
 
 
-def get_sub_df(df, det_cols):
-    return df[list(det_cols)].drop_duplicates()
+def get_sub_df(df: pd.DataFrame, columns):
+    return df[list(columns)].drop_duplicates()
 
 
-def score_fds(df, fds):
+def score_fds(df: pd.DataFrame, fds):
     fd_scores = {}
     df_len = len(df)
     # Iterate through the list of functional dependencies
@@ -69,14 +69,14 @@ def normalize_table(df: pd.DataFrame, selected_fd: Tuple) -> Tuple[pd.DataFrame,
     return normalized_df, df_determinant, df_dependant
 
 
-def print_df_with_stats(df):
+def print_df_with_stats(df: pd.DataFrame):
     st.write("records: ", len(df),
              "columns: ", len(df.columns),
              "cells: ", len(df) * len(df.columns))
     st.dataframe(df)
 
 
-def to_csv_download_link(df, filename="normalized_data.csv"):
+def to_csv_download_link(df: pd.DataFrame, filename="normalized_data.csv"):
     csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()
     href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV</a>'
